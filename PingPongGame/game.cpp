@@ -45,14 +45,18 @@ static void simulateGame(Input* input, float deltaTime) {
     if (currentMode == gamePlay) {
 
         float playerDDP1 = 0;
-        if (enemyAi) {
-            if (is_down(btn_up)) playerDDP1 += 20;
-            if (is_down(btn_down)) playerDDP1 -= 20;
-        }
-        else {
-            if (ballY > playerP1) playerDDP1 += 12;
-            if (ballY < playerP1) playerDDP1 -= 12;
-        }
+if (!enemyAi) {
+    float targetY = ballY + ballDPY * (ballX - .80 + playerHalfX) / ballDPX;
+    if (targetY > arenaHalfY) targetY = arenaHalfY;
+    if (targetY < -arenaHalfY) targetY = -arenaHalfY;
+    
+    if (targetY > playerP1) playerDDP1 += 20;
+    if (targetY < playerP1) playerDDP1 -= 20;
+}
+else {
+    if (is_down(btn_up)) playerDDP1 += 20;
+    if (is_down(btn_down)) playerDDP1 -= 20;
+}
         // player 2
         float playerDDP2 = 0;
         if (is_down(btn_W)) playerDDP2 += 20;
